@@ -36,5 +36,5 @@ spec:
       #    nodePort: 31004  # Optional: Specify a nodePort if you want a fixed port
   selector:
     app: frontend  # Ensure this matches the labels in the Deployment
-  type: ClusterIP
+  type: LoadBalancer
 
