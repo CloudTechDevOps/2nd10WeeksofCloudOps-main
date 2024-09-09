@@ -8,7 +8,7 @@ pipeline {
         SCANNER_HOME=tool 'sonar-scanner'
         AWS_ACCOUNT_ID = credentials('ACCOUNT_ID')
         AWS_ECR_REPO_NAME = credentials('ECR_REPO2')
-        AWS_DEFAULT_REGION = 'ap-south-1'
+        AWS_DEFAULT_REGION = 'us-east-1'
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
     }
     stages {
@@ -19,12 +19,12 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/vardhan1228/main-project-fp.git'
+                git branch: 'main', url: 'https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git'
             }
         }
         stage('Sonarqube Analysis') {
             steps {
-                dir('Application-Code/backend') {
+                dir('backend') {
                     withSonarQubeEnv('sonar-server') {
                         sh ''' $SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectName=three-tier-backend \
@@ -40,17 +40,9 @@ pipeline {
                 }
             }
         }
-        stage('OWASP Dependency-Check Scan') {
-            steps {
-                dir('Application-Code/backend') {
-                    dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                }
-            }
-        }
         stage('Trivy File Scan') {
             steps {
-                dir('Application-Code/backend') {
+                dir('backend') {
                     sh 'trivy fs . > trivyfs.txt'
                 }
             }
@@ -58,7 +50,7 @@ pipeline {
         stage("Docker Image Build") {
             steps {
                 script {
-                    dir('Application-Code/backend') {
+                    dir('backend') {
                             sh 'docker system prune -f'
                             sh 'docker container prune -f'
                             sh 'docker build -t ${AWS_ECR_REPO_NAME} .'
@@ -82,23 +74,23 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/vardhan1228/main-project-fp.git'
+                git branch: 'main', url: 'https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git'
             }
         }
         stage('Update Deployment file') {
             environment {
-                GIT_REPO_NAME = "main-project-fp"
-                GIT_USER_NAME = "vardhan1228"
+                GIT_REPO_NAME = "2nd10WeeksofCloudOps-main"
+                GIT_USER_NAME = "CloudTechDevOps"
             }
             steps {
-                dir('Kubernetes-Manifests-file/Backend') {
+                dir('kubernetes-files') {
                     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                         sh '''
-                            git config user.email "vvardhan1211@gmail.com"
-                            git config user.name "vardhan1228"
+                            git config user.email "cloud87777@gmail.com"
+                            git config user.name "CloudTechDevOps"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            sed -i "s#image:.*#image: $REPOSITORY_URI$AWS_ECR_REPO_NAME:$BUILD_NUMBER#g" deployment.yaml
+                            sed -i "s#image:.*#image: $REPOSITORY_URI$AWS_ECR_REPO_NAME:$BUILD_NUMBER#g" backend-deployment.yaml
                             git add .
                             git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
                             git push https://${git_token}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
