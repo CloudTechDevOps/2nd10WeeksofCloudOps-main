@@ -8,7 +8,7 @@ sudo yum install git -y
 
 #-------java dependency for jenkins------------
 
-sudo dnf install java-11-amazon-corretto -y
+sudo dnf install java-17-amazon-corretto -y
 
 #------------jenkins install-------------
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
@@ -61,8 +61,9 @@ sudo yum install docker -y #linux 2023
 sudo usermod -aG docker ec2-user
 sudo usermod -aG docker jenkins 
 newgrp docker
-sudo chmod 777 /var/run/docker.sock
 sudo service docker start
+sudo chmod 777 /var/run/docker.sock
+
 
 
 #----------------------Trivy install---------------
