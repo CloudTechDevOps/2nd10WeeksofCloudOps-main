@@ -18,7 +18,7 @@ RUN npm run build
 
 # Stage 2: Serve the application with Apache HTTP Server
 FROM httpd:2.4
-RUN echo 'ServerName http://backend' >> /usr/local/apache2/conf/httpd.conf
+#RUN echo 'ServerName http://backend' >> /usr/local/apache2/conf/httpd.conf
 
 # Copy the build output from the previous stage
 COPY --from=build /app/build /usr/local/apache2/htdocs/
