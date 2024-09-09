@@ -4,4 +4,4 @@ metadata:
   name: db-config
 data:
   DB_PORT: "3306"            # Port for PostgreSQL
-  DB_NAME: "test"   # Replace with your database name
+  DB_NAME: "book-rds"  # Replace with your database name
