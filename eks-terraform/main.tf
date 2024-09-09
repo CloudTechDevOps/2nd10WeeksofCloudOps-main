@@ -4,7 +4,7 @@ provider "aws" {
 
  #Creating IAM role for EKS
   resource "aws_iam_role" "master" {
-    name = "vardhan-eks-master1"
+    name = "veera-eks-master1"
 
     assume_role_policy = jsonencode({
       "Version": "2012-10-17",
@@ -36,7 +36,7 @@ provider "aws" {
   }
 
   resource "aws_iam_role" "worker" {
-    name = "vardhan-eks-worker1"
+    name = "veera-eks-worker1"
 
     assume_role_policy = jsonencode({
       "Version": "2012-10-17",
@@ -53,7 +53,7 @@ provider "aws" {
   }
 
   resource "aws_iam_policy" "autoscaler" {
-    name = "vardhan-eks-autoscaler-policy1"
+    name = "veera-eks-autoscaler-policy1"
     policy = jsonencode({
       "Version": "2012-10-17",
       "Statement": [
@@ -106,7 +106,7 @@ provider "aws" {
 
   resource "aws_iam_instance_profile" "worker" {
     depends_on = [aws_iam_role.worker]
-    name       = "vardhan-eks-worker-new-profile1"
+    name       = "veera-eks-worker-new-profile1"
     role       = aws_iam_role.worker.name
   }
  
@@ -169,7 +169,7 @@ data "aws_security_group" "selected" {
     instance_types  = ["t2.small"]
 
     remote_access {
-      ec2_ssh_key               = "sri"
+      ec2_ssh_key               = "vsv"
       source_security_group_ids = [data.aws_security_group.selected.id]
     }
 
