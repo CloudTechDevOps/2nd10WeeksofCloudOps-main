@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  DB_PORT: "3306"            # Port for PostgreSQL
+  DB_NAME: "kubernetes-db"   # Replace with your database name
