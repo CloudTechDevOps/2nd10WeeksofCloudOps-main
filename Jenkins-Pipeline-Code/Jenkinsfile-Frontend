@@ -40,14 +40,6 @@ pipeline {
                 }
             }
         }
-#        stage('OWASP Dependency-Check Scan') {
- #           steps {
-  #              dir('client') {
-  #                  dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-   #                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-    #            }
-     #       }
-      #  }
         stage('Trivy File Scan') {
             steps {
                 dir('client') {
