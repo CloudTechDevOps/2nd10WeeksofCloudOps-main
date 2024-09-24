@@ -74,7 +74,7 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git'
+                git branch: 'main', url: 'https://github.com/Avanthirao/2nd10WeeksofCloudOps-main.git'
             }
         }
         stage('Update Deployment file') {
