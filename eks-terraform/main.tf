@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"  # Specify your desired region
+  region = "eu-west-1"  # Specify your desired region
 }
 
  #Creating IAM role for EKS
@@ -169,7 +169,7 @@ data "aws_security_group" "selected" {
     instance_types  = ["t2.small"]
 
     remote_access {
-      ec2_ssh_key               = "us-east-1"
+      ec2_ssh_key               = "eu-west-1"
       source_security_group_ids = [data.aws_security_group.selected.id]
     }
 
