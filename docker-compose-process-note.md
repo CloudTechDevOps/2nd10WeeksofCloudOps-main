@@ -24,8 +24,14 @@ git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
 cd 2nd10WeeksofCloudOps-main
 ```  
 -- edit the config.js file in follwing path vi clinet/src/pages/config.js
-
+```javascript
+// const API_BASE_URL = "http://25.41.26.237:84"; // on live backend server which is running on port 84
+const API_BASE_URL = "http://publicip:portNumber";
+export default API_BASE_URL;
 -- pasate your publicip and port {http://public-ip:86}
+```
+make sure you EDIT above file depends on your scenario
+
 
 -- update the rds detailes in docker-compose.yaml
 
