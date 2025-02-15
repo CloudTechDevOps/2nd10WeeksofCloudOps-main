@@ -1,5 +1,6 @@
 -- crate a amazon-linux ec2 instance and connect to the instance
 -- create a rds  mysql database for this project
+
 -- install the git,docker and docker compose by follwing commands.run the following commands individually
 ```sh
 sudo yum install git -y
