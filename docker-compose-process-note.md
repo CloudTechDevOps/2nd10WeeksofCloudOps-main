@@ -1,7 +1,7 @@
 -- crate a amazon-linux ec2 instance and connect to the instance
 -- create a rds  mysql database for this project
 -- install the git,docker and docker compose by follwing commands.run the following commands individually
-
+```sh
 sudo yum install git -y
 sudo yum install docker -y #linux 2023
 sudo usermod -aG docker ec2-user
@@ -12,7 +12,7 @@ docker version
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
-    
+``` 
 -- after above process clone the repo by follwing command
     
 git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
