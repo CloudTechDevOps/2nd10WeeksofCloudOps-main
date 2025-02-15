@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: frontend-app
+    ports:
+      - "84:80"
+    networks:
+      - appnet
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-app
+    ports:
+      - "86:80"
+    environment:
+      - DB_HOST=book-rds.c1u4kewc6r37.ap-south-1.rds.amazonaws.com
+      - DB_USERNAME=admin
+      - DB_PASSWORD=veeranarni
+      - PORT=3306
+    networks:
+      - appnet
+
+# Define the network here
+networks:
+  appnet:
+    driver: bridge
