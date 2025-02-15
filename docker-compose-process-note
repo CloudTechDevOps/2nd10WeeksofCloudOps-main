@@ -28,7 +28,7 @@ cd 2nd10WeeksofCloudOps-main
     
 docker-compose up -d
     
--- for above command you deploy the two containers 
+-- for above command will deploy the frontend,backend containers
 -- next install the mariadb or mysql on your servr for database inilize purpose 
     
 sudo yum install mariadb105-server -y
