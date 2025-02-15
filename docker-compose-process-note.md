@@ -24,13 +24,17 @@ git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
 cd 2nd10WeeksofCloudOps-main
 ```  
 -- edit the config.js file in follwing path vi clinet/src/pages/config.js
+
 -- pasate your publicip and port {http://public-ip:86}
+
 -- update the rds detailes in docker-compose.yaml
+
 -- after completeing the above process just run docker compose file by following command
 ```sh    
 docker-compose up -d
 ```   
 -- for above command will deploy the frontend,backend containers
+
 -- next install the mariadb or mysql on your servr for database inilize purpose 
 ```sh    
 sudo yum install mariadb105-server -y
