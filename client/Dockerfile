@@ -47,11 +47,13 @@ FROM httpd:2.4
 COPY --from=build /app/build /usr/local/apache2/htdocs/
 
 # Copy the startup script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
 
 # Run the script before starting Apache
-CMD ["/entrypoint.sh"]
+CMD ["httpd-foreground"]
+
+# CMD ["/entrypoint.sh"]
