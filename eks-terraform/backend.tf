@@ -7,8 +7,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "veerasir22"
-    key    = "eks/terraform.tfstate"
+    bucket = "testdevprdtest"
+    key    = "k8/terraform.tfstate"
     region = "ap-southeast-2"
   }
 
