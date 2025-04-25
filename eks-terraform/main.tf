@@ -168,10 +168,7 @@ data "aws_security_group" "selected" {
     disk_size       = 20
     instance_types  = ["t2.small"]
 
-    remote_access {
-      ec2_ssh_key               = "us-east-1"
-      source_security_group_ids = [data.aws_security_group.selected.id]
-    }
+   
 
     labels = {
       env = "dev"
