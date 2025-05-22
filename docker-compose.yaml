@@ -21,13 +21,24 @@ services:
       - "86:80"
     environment:
       - DB_HOST=book-rds.c1u4kewc6r37.ap-south-1.rds.amazonaws.com
-      - DB_USERNAME=admin
-      - DB_PASSWORD=veeranarni
+      - DB_USERNAME=root
+      - DB_PASSWORD=Cloud123
       - PORT=3306
     networks:
       - appnet
 
-# Define the network here
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Cloud123
+      MYSQL_DATABASE: yourdbname
+    ports:
+      - "3306:3306"
+    networks:
+      - appnet
+
 networks:
   appnet:
     driver: bridge
