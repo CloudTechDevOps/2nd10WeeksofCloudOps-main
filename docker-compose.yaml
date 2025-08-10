@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend-app
     ports:
-      - "84:80"
+      - "80:80"
     networks:
       - appnet
     depends_on:
@@ -20,20 +20,25 @@ services:
     ports:
       - "86:80"
     environment:
-      - DB_HOST=book-rds.c1u4kewc6r37.ap-south-1.rds.amazonaws.com
-      - DB_USERNAME=root
-      - DB_PASSWORD=Cloud123
+      - DB_HOST=mysql
+      - DB_USERNAME=admin
+      - DB_PASSWORD=Devops123
       - PORT=3306
     networks:
       - appnet
+    depends_on:
+      - mysql
 
   mysql:
-    image: mysql:8
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     container_name: mysql-db
-    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Cloud123
-      MYSQL_DATABASE: yourdbname
+      - MYSQL_ROOT_PASSWORD=Cloud122
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=Devops123
     ports:
       - "3306:3306"
     networks:
