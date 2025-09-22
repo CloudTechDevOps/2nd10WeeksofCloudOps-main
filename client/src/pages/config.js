@@ -1,5 +1,5 @@
-// const API_BASE_URL = "http://3.87.228.149:84";
-const API_BASE_URL = "http://backend.099200120903.realhandsonlabs.net";
+const API_BASE_URL = "http://18.215.151.169:84";
+//const API_BASE_URL = "http://backend.099200120903.realhandsonlabs.net";
 // export default API_BASE_URL;
 // const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://backend";
 /// export default API_BASE_URL;
