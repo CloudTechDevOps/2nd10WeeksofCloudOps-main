@@ -54,6 +54,8 @@ cd backend
 
 npm install
 
+npm install dotenv
+
 npm install -g pm2
 
 pm2 start index.js --name node-app
@@ -84,6 +86,9 @@ in above line change to your backend loadbalncer url
 const API_BASE_URL = "http://backend-loadbalancer-url";
 ```
 sudo dnf install -y nodejs
+sudo yum install httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
 ```
 ### then go to client directory 
 ### run below commands
