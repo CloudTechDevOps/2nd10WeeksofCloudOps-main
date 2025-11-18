@@ -11,7 +11,6 @@
 - Nodejs
 - MySQL
 
-## 🖥️ Installation of frontend
 
 **Note**: You should have nodejs installed on your system. [Node.js](https://nodejs.org/)
 
