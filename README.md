@@ -17,82 +17,90 @@
 
 👉 let install dependency to run react application
 
-```sh
-cd client
-npm install
+
 ```
-
-**Note**: you have to change one file for backend API. you will find that `src/pages/config.js`
-
-```sh
-vim src/pages/config.js
+1.Create rds database into private subnets
+2.Create two private  servers in private subnets one is for frontend and another one is for backend
+3.Create two TG and loadbalncers one is for frontend another one is for backend 
+4.Create both loadblancers in public subnets only and loadbalancer type s internet facing only becuser internal loadbalncer not working for our project 
 ```
-
-```javascript
-// const API_BASE_URL = "http://25.41.26.237:80"; // on live backend server which is running on port 80
-const API_BASE_URL = "http://localhost:portNumber";
-export default API_BASE_URL;
+### ->>connect to backend server--
 ```
-make sure you EDIT above file depends on your scenario
-
-
-```sh
-npm run build 
+ git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
+   cd backend
 ```
-
-above command creat optimize build of the application in client folder. `build/` you will find all the files that you can serve through **Apache** or **Nginx**
-that's the whole setup of the frontend
-
-##  🖥️ ️Installation of backend
-
-**Note**: You should have nodejs installed on your system. [Node.js](https://nodejs.org/)
-
-👉 let install dependency to run Nodejs  API
-
-```sh
-cd backend
-npm install
+ ### edit the .env file in bellow path if u dont have any .env file just create in below path
 ```
-Now we need to create .env file that holds all the configuration details of the backend. you should be in backend directory
+2nd10WeeksofCloudOps-main.git/backend/.env
 
-```sh
-vim .env
-```
-add below content 
-
-```javascript
-DB_HOST=localhost or URL_of_RDS
-DB_USERNAME=user_name_of_MySQL
-DB_PASSWORD=passwod_of_my_sql
+### add this mater
+DB_HOST=book.rds.com	#change rds endpoint
+DB_USERNAME=admin	#cahnge to nyour rds user name 
+DB_PASSWORD="veera"   # change to your rds password
 PORT=3306
 ```
-**Note** : please change above file depending on your setup. like you may use RDS(AWS) or Local mysql-server on your system. your mysql contain database with the name of `test` and it should has `books` table. You can you test.sql to create table 
-
-
-```sh
-mysql -h <<RDS_ENDPOINT OR localhost>> -u <<USER_NAME>> -p<<PASSWORD>>
-
-CREATE DATABASE test;
-
-mysql -h <<RDS_ENDPOINT OR localhost>> -u <<USER_NAME>> -p<<PASSWORD>> test < test.sql
+```
+yum install mariadb105-server
+```
+#### SSH into backend server and then run test.sql script from backend to create tables and records 
+```
+mysql -h book.rds.com -u admin -p<password> < test.sql
 ```
 
+### Backend deploy process ###
+```
+sudo dnf install -y nodejs
 
-please install pm2 if you want to run on cloud. you may need sudo privilages to installed it because we are going to installed globally.
+cd backend
 
-```sh
+npm install
+
 npm install -g pm2
+
+pm2 start index.js --name node-app
+
+pm2 startup
+
+sudo systemctl enable pm2-root
+
+pm2 save
 ```
+#### after that create backend tg and loadbalncer and check your loadbalncer is giving hello response or not 
 
-now you can run this application. make sure you are in backend directory
 
+# ---------------------------------- FrontEnd---------------------------------------
 
-```sh
-pm2 start index.js --name "backendAPI"
+ ### Frontend deploy process ###
 ```
+git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
+cd client 
+```
+##### edit the config.js
+```
+vi client/src/pages/config.js
+  
+const API_BASE_URL = "http://api.narni.co.in";
+ ````
+in above line change to your backend loadbalncer url
+const API_BASE_URL = "http://backend-loadbalancer-url";
+```
+sudo dnf install -y nodejs
+```
+### then go to client directory 
+### run below commands
 
-above command will start node server on port 80, you can modify the port number in `index.js` file
+### ****(Use npm run build:
+### When preparing the app for deployment (e.g., to a server or hosting service like AWS, Netlify, or Vercel).
+### Use npm start:
+### During development or to start the app in production (for backend apps).)*****
+```
+npm install 
+npm run build
+sudo cp -r build/* /var/www/html
+```
+# your frontend part is completed 
 
-✈️ Now we are Ready to see the application
+### #### after that create frontend tg and loadbalncer and check your loadbalncer is giving project output along with books 
+# add the books 
 
 **Thank you so much for reading..😅**
