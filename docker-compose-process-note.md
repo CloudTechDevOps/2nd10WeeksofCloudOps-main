@@ -49,6 +49,34 @@ sudo yum install mariadb105-server -y
 ```sh    
 mysql -h <rds-end-point> -u admin -p<passowrd> < test.sql
 mysql -h book-rds.c1u4kewc6r37.ap-south-1.rds.amazonaws.com -u admin -pveeranarni < test.sql   ## example command chamge the values
-```    
+```
+
+
+
+Step 1: Download the correct Buildx binary
+
+
+LATEST=$(curl -s https://api.github.com/repos/docker/buildx/releases/latest | grep tag_name | cut -d '"' -f 4)
+echo "Latest version: $LATEST"
+
+curl -SL "https://github.com/docker/buildx/releases/download/$LATEST/buildx-$LATEST.linux-amd64" \
+    -o ~/.docker/cli-plugins/docker-buildx
+
+
+Now apply permissions:
+
+chmod +x ~/.docker/cli-plugins/docker-buildx
+
+❗ Step 2: Make sure the directory exists
+mkdir -p ~/.docker/cli-plugins
+
+✅ Step 3: Verify Buildx is now detected
+
+docker buildx version
+
+
+You should now see something like:
+
+github.com/docker/buildx v0.18.0
 -- then search the public-ip:84 port in broswer you will get the appliaction deployment then add the book
     --------------------------THANKYOU------------------------------------------------------------
