@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     container_name: backend-app
     ports:
-      - "86:80"
+      - "84:80"
     environment:
       - DB_HOST=mysql
       - DB_USERNAME=admin
