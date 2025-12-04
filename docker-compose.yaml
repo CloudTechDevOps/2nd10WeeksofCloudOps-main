@@ -22,7 +22,7 @@ services:
       - DB_HOST=mysql
       - DB_USERNAME=admin
       - DB_PASSWORD=Devops123
-      - PORT=3306
+      - DB_PORT=3306
     networks:
       - appnet
     depends_on:
@@ -43,9 +43,8 @@ services:
     networks:
       - appnet
     # volumes:
-    # - ./mysql_data:/var/lib/mysql
+    #   - ./mysql_data:/var/lib/mysql
 
 networks:
   appnet:
     driver: bridge
-
