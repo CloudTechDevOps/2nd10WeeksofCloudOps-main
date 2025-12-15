@@ -18,9 +18,9 @@ This README explains how to install Nginx on Amazon Linux, deploy the provided `
 Run the following on the public-facing EC2 (nginx) instance.
 
 ### After cloneing your your config.js file url must be /api only
-once chek in your config file
+once chek in your config file below one is comented or uncomented if commented please uncoment and build the package
 ```
-const API_BASE_URL = "/api";  // dont change it.
+const API_BASE_URL = "/api";  // For reverse proxy it is mandatory so dont change
 
 ```
 ```bash
@@ -29,6 +29,7 @@ sudo yum install -y nginx
 # Enable and start nginx
 sudo systemctl enable --now nginx
 ```
+### create a proxy file and paste the file from git and chage the backend private ip if you are using internal loadbalncer change it 
 ```bash
 sudo vi /etc/nginx/conf.d/reverse-proxy.conf
 ```
@@ -63,3 +64,4 @@ If your React app expects the app to be served at `/` this config will work as-i
 
 ## Sample Backend Setup (Amazon Linux) — Node.js / Express
 These instructions create a minimal API that listens on port 80 and matches the `proxy_pass` target.
+
