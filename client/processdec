@@ -1,0 +1,26 @@
+🧠 WHY THIS APPROACH IS POWERFUL
+❌ Without multi-stage (BAD)
+
+If you used only Node:
+
+Node stays in final image ❌
+npm stays ❌
+build tools stay ❌
+node_modules stays ❌
+
+👉 Result:
+
+700MB – 1GB image
+✅ With multi-stage (YOUR APPROACH)
+
+Final image contains:
+
+✔ Apache only
+✔ Static HTML/CSS/JS
+✔ No Node.js
+✔ No npm
+✔ No dev tools
+
+👉 Result:
+
+50MB – 70MB image 🚀
