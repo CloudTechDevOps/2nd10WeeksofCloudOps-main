@@ -1,33 +1,17 @@
-# FROM node:18 AS build
+# FROM node:18
 
-# # Set the working directory
 # WORKDIR /app
 
-# # Copy package.json and package-lock.json
-# COPY package.json package-lock.json ./
-
-# # Install dependencies
-# RUN npm install
-
-# # Copy the rest of the application code
 # COPY . .
-# #ENV REACT_APP_API_BASE_URL=http://backend
 
-# # Build the React application
+# RUN npm install
 # RUN npm run build
 
-# # Stage 2: Serve the application with Apache HTTP Server
-# FROM httpd:2.4
-# #RUN echo 'ServerName http://backend' >> /usr/local/apache2/conf/httpd.conf
+# RUN npm install -g http-server
 
-# # Copy the build output from the previous stage
-# COPY --from=build /app/build /usr/local/apache2/htdocs/
+# EXPOSE 3000
 
-# # Expose port 80
-# EXPOSE 80
-
-# # Start Apache HTTP Server
-# CMD ["httpd-foreground"]
+# CMD ["http-server", "build", "-p", "3000"]
 
 # Stage 1: Build React App
 FROM node:18 AS build
