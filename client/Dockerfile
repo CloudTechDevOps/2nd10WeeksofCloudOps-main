@@ -1,19 +1,4 @@
-# FROM node:18
-
-# WORKDIR /app
-
-# COPY . .
-
-# RUN npm install
-# RUN npm run build
-
-# RUN npm install -g http-server
-
-# EXPOSE 80
-
-# CMD ["http-server", "build", "-p", "80"]
-
-# Stage 1: Build React App
+# Stage 1: Build React app
 FROM node:18 AS build
 
 WORKDIR /app
@@ -24,15 +9,20 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve with Apache HTTP Server
-FROM httpd:2.4
+# Stage 2: Serve with NGINX
+FROM nginx:alpine
 
-# Copy the build output from the previous stage
-COPY --from=build /app/build /usr/local/apache2/htdocs/
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Expose port 80
+# Copy your custom nginx config
+COPY proxy.conf /etc/nginx/conf.d/default.conf
+
+# Copy build files to nginx html directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port
 EXPOSE 80
 
-# Run the script before starting Apache
- CMD ["httpd-foreground"]
-
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
