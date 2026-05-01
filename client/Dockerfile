@@ -9,9 +9,9 @@ RUN npm run build
 
 RUN npm install -g http-server
 
-EXPOSE 3000
+EXPOSE 80
 
-CMD ["http-server", "build", "-p", "3000"]
+CMD ["http-server", "build", "-p", "80"]
 
 # # Stage 1: Build React App
 # FROM node:18 AS build
