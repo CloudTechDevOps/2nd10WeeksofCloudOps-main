@@ -33,17 +33,8 @@ git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
 ```sh    
 cd 2nd10WeeksofCloudOps-main
 ```  
--- edit the config.js file in follwing path vi clinet/src/pages/config.js
-```javascript
-// const API_BASE_URL = "http://25.41.26.237:84"; // on live backend server which is running on port 84
-const API_BASE_URL = "http://publicip:portNumber";
-export default API_BASE_URL;
--- pasate your publicip and port {http://public-ip:86}
-```
-make sure you EDIT above file depends on your scenario
 
-
--- update the rds detailes in docker-compose.yaml
+-- update the rds detailes in docker-compose.yaml if you are using rds only other wise just go through current yaml
 
 -- after completeing the above process just run docker compose file by following command
 ```sh    
@@ -51,15 +42,15 @@ docker-compose up -d
 ```   
 -- for above command will deploy the frontend,backend containers
 
--- next install the mariadb or mysql on your servr for database inilize purpose 
+-- next install the mariadb or mysql on your servr for database inilize only for rds process
 ```sh    
 sudo yum install mariadb105-server -y
 ```    
---after that chaange into you project backend dirictroy then run the follwing command 
+--after that chaange into you project backend dirictroy then run the follwing command  only of rds 
 ```sh    
 mysql -h <rds-end-point> -u admin -p<passowrd> < test.sql
 mysql -h book-rds.c1u4kewc6r37.ap-south-1.rds.amazonaws.com -u admin -pveeranarni < test.sql   ## example command chamge the values
 ```
 
--- then search the public-ip:84 port in broswer you will get the appliaction deployment then add the book
+-- then search the public-ip:80 port in broswer you will get the appliaction deployment then add the book
     --------------------------THANKYOU------------------------------------------------------------
