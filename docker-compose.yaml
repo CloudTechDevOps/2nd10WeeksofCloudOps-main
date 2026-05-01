@@ -1,4 +1,5 @@
-version: "3"
+version: "3.9"
+
 services:
   frontend:
     build:
@@ -20,14 +21,16 @@ services:
     ports:
       - "84:80"
     environment:
-      - DB_HOST=mysql
-      - DB_USERNAME=admin
-      - DB_PASSWORD=Devops123
-      - DB_PORT=3306
+      DB_HOST: mysql
+      DB_USERNAME: admin
+      DB_PASSWORD: Devops123
+      DB_NAME: test
+      DB_PORT: 3306
     networks:
       - appnet
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   mysql:
     build:
@@ -35,17 +38,26 @@ services:
       dockerfile: Dockerfile
     container_name: mysql-db
     environment:
-      - MYSQL_ROOT_PASSWORD=Cloud122
-      - MYSQL_DATABASE=test
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=Devops123
+      MYSQL_ROOT_PASSWORD: Cloud122
+      MYSQL_DATABASE: test
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Devops123
     ports:
       - "3306:3306"
     networks:
       - appnet
-    # volumes:
-    #   - ./mysql_data:/var/lib/mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 networks:
   appnet:
     driver: bridge
+
+volumes:
+  mysql_data:
