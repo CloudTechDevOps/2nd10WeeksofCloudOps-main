@@ -24,6 +24,12 @@ curl -L https://github.com/docker/buildx/releases/download/v0.33.0/buildx-v0.33.
 
 chmod +x ~/.docker/cli-plugins/docker-buildx
 docker buildx version
+
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
+
 ```
 -- after above process clone the repo by follwing command
 ```sh   
