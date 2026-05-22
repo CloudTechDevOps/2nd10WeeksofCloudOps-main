@@ -144,7 +144,7 @@ data "aws_security_group" "selected" {
   resource "aws_eks_cluster" "eks" {
     name     = "project-ekss"
     role_arn = aws_iam_role.master.arn
-    version  = "1.29" 
+    version  = "1.32" 
 
     vpc_config {
       subnet_ids = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
