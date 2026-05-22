@@ -83,15 +83,6 @@ variable "node_min_size" {
   type        = number
 }
 
-variable "eks_helper_ami_id" {
-  description = "AMI ID for the EKS helper EC2 instance."
-  type        = string
-}
-
-variable "eks_helper_instance_type" {
-  description = "Instance type for the EKS helper EC2 instance."
-  type        = string
-}
 
 variable "db_identifier" {
   description = "RDS instance identifier."
