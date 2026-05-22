@@ -106,7 +106,7 @@ provider "aws" {
 
   resource "aws_iam_instance_profile" "worker" {
     depends_on = [aws_iam_role.worker]
-    name       = "veera-eks-worker-new-profile1"
+    name       = "veera-eks-worker-new-profile2"
     role       = aws_iam_role.worker.name
   }
  
@@ -144,7 +144,7 @@ data "aws_security_group" "selected" {
   resource "aws_eks_cluster" "eks" {
     name     = "project-ekss"
     role_arn = aws_iam_role.master.arn
-    version  = "1.32" 
+    version  = "1.35" 
 
     vpc_config {
       subnet_ids = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
