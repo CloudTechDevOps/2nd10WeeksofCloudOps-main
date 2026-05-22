@@ -2,7 +2,7 @@
 
 resource "aws_db_instance" "rds" {
   allocated_storage      = 20
-  identifier = "microservices-rds"
+  identifier = "books-rds"
   db_subnet_group_name   = aws_db_subnet_group.sub-grp.id
   engine                 = "mysql"
   engine_version         = "8.4.8"
