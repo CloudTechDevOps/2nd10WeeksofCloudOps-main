@@ -142,7 +142,7 @@ data "aws_security_group" "selected" {
 
  #Creating EKS Cluster
   resource "aws_eks_cluster" "eks" {
-    name     = "project-eks"
+    name     = "project-ekss"
     role_arn = aws_iam_role.master.arn
     version  = "1.29" 
 
@@ -162,7 +162,7 @@ data "aws_security_group" "selected" {
   }
  resource "aws_eks_node_group" "node-grp" {
     cluster_name    = aws_eks_cluster.eks.name
-    node_group_name = "project-node-group"
+    node_group_name = "project-node-groupp"
     node_role_arn   = aws_iam_role.worker.arn
     subnet_ids      = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
     capacity_type   = "ON_DEMAND"
