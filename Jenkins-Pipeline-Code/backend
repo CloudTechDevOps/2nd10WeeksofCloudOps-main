@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCOUNT_ID = "545009827818"
+        AWS_REGION     = "ap-south-1"
+        ECR_REPO       = "backend"
+        IMAGE_NAME     = "backend"
+        GIT_REPO_NAME  = "2nd10WeeksofCloudOps-main"
+        GIT_USER_NAME  = "CloudTechDevOps"
+    }
+
+    stages {
+
+        stage('Cleaning Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Checkout from Git') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git'
+            }
+        }
+
+        stage("Docker Image Build") {
+            steps {
+                dir('backend') {
+                    sh '''
+                        docker system prune -f
+                        docker container prune -f
+                        docker build -t ${IMAGE_NAME} .
+                    '''
+                }
+            }
+        }
+
+        stage("ECR Image Pushing") {
+            steps {
+                sh '''
+                    aws ecr get-login-password --region ${AWS_REGION} \
+                    | docker login --username AWS --password-stdin \
+                    ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+                    docker tag ${IMAGE_NAME}:latest \
+                    ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${BUILD_NUMBER}
+
+                    docker push \
+                    ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Update Deployment file') {
+            steps {
+                dir('kubernetes-files') {
+                    withCredentials([string(credentialsId: 'my-git-pattoken', variable: 'git_token')]) {
+                        sh '''
+                            git config user.email "cloud87777@gmail.com"
+                            git config user.name "CloudTechDevOps"
+
+                            sed -i "s#image:.*#image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${BUILD_NUMBER}#g" backend-deployment.yaml
+
+                            git add .
+                            git commit -m "Update backend image to version ${BUILD_NUMBER}"
+                            git push https://${git_token}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
