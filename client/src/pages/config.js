@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
-const BASE = "/api";
+const BASE = '/api';
 
 export const api = axios.create({
   baseURL: BASE,
@@ -10,10 +10,15 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('bsp_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   if (!(config.data instanceof FormData)) {
     config.headers['Content-Type'] = 'application/json';
   }
+
   return config;
 });
 
@@ -25,6 +30,7 @@ api.interceptors.response.use(
       localStorage.removeItem('bsp_user');
       window.location.href = '/login';
     }
+
     return Promise.reject(err.response?.data || err);
   }
 );
@@ -45,20 +51,24 @@ export const authApi = {
   me: () => api.get('/auth/me'),
 };
 
-const SOCKET_URL = "/socket.io";
-
-export const socket = io(SOCKET_URL, {
+export const socket = io({
+  path: '/socket.io',
   autoConnect: false,
   transports: ['websocket', 'polling'],
+});
+
+socket.on('connect', () => {
+  socket.emit('join:library');
 });
 
 export function connectSocket() {
   if (!socket.connected) {
     socket.connect();
-    socket.emit('join:library');
   }
 }
 
 export function disconnectSocket() {
-  if (socket.connected) socket.disconnect();
+  if (socket.connected) {
+    socket.disconnect();
+  }
 }
