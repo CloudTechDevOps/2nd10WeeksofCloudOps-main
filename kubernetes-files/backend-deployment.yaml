@@ -40,6 +40,21 @@ spec:
             configMapKeyRef:
               name: db-config
               key: DB_NAME
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: NODE_ENV
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: JWT_SECRET
+        - name: JWT_EXPIRES_IN
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: JWT_EXPIRES_IN
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
