@@ -1,0 +1,113 @@
+
+CREATE DATABASE IF NOT EXISTS booksapp
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE booksapp;
+
+-- ------------------------------------------------------------
+-- Users table
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS users (
+  id          VARCHAR(36)   NOT NULL DEFAULT (UUID()),
+  username    VARCHAR(50)   NOT NULL,
+  email       VARCHAR(255)  NOT NULL,
+  password    VARCHAR(255)  NOT NULL,
+  role        ENUM('admin','user') NOT NULL DEFAULT 'user',
+  avatar_url  VARCHAR(500)  NULL,
+  created_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_users_email    (email),
+  UNIQUE KEY uq_users_username (username),
+  INDEX       idx_users_role   (role)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Categories table
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS categories (
+  id         INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  name       VARCHAR(100)  NOT NULL,
+  slug       VARCHAR(100)  NOT NULL,
+  color      VARCHAR(7)    NOT NULL DEFAULT '#6366f1',
+  created_at DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_categories_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Books table (normalized, production-grade)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS books (
+  id            VARCHAR(36)     NOT NULL DEFAULT (UUID()),
+  title         VARCHAR(300)    NOT NULL,
+  description   TEXT            NULL,
+  price         DECIMAL(10, 2)  NOT NULL DEFAULT 0.00,
+  cover_url     LONGTEXT        NULL,
+  author        VARCHAR(200)    NULL,
+  isbn          VARCHAR(20)     NULL,
+  published_at  DATE            NULL,
+  category_id   INT UNSIGNED    NULL,
+  created_by    VARCHAR(36)     NULL,
+  rating        DECIMAL(3, 2)   NULL CHECK (rating >= 0 AND rating <= 5),
+  stock         INT UNSIGNED    NOT NULL DEFAULT 0,
+  status        ENUM('active','archived','draft') NOT NULL DEFAULT 'active',
+  created_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY  uq_books_isbn      (isbn),
+  INDEX       idx_books_status   (status),
+  INDEX       idx_books_category (category_id),
+  INDEX       idx_books_created  (created_at),
+  INDEX       idx_books_price    (price),
+  FULLTEXT    ft_books_search    (title, description, author),
+  CONSTRAINT  fk_books_category FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL,
+  CONSTRAINT  fk_books_creator  FOREIGN KEY (created_by)  REFERENCES users (id)      ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Reviews table
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reviews (
+  id         VARCHAR(36)  NOT NULL DEFAULT (UUID()),
+  book_id    VARCHAR(36)  NOT NULL,
+  user_id    VARCHAR(36)  NOT NULL,
+  rating     TINYINT      NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  body       TEXT         NULL,
+  created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_reviews_book_user (book_id, user_id),
+  INDEX      idx_reviews_book    (book_id),
+  INDEX      idx_reviews_user    (user_id),
+  CONSTRAINT fk_reviews_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+  CONSTRAINT fk_reviews_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Seed data
+-- ------------------------------------------------------------
+INSERT INTO categories (name, slug, color) VALUES
+  ('Technology',    'technology',    '#6366f1'),
+  ('Science',       'science',       '#22c55e'),
+  ('Business',      'business',      '#f59e0b'),
+  ('Fiction',       'fiction',       '#ec4899'),
+  ('Self-Help',     'self-help',     '#14b8a6'),
+  ('History',       'history',       '#f97316');
+
+INSERT INTO users (id, username, email, password, role) VALUES
+  ('00000000-0000-0000-0000-000000000001', 'admin', 'admin@bookshelf.pro',
+   '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewXAvMERRgXgWq/W', 'admin');
+-- Default password: Admin@123
+
+INSERT INTO books (id, title, description, price, cover_url, author, category_id, stock, status, created_by) VALUES
+  (UUID(), 'The Cloud Architect', 'A comprehensive guide to multi-cloud architectures and DevSecOps practices for modern engineering teams.', 2343.20,
+   'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80', 'Veera Kumar', 1, 50, 'active',
+   '00000000-0000-0000-0000-000000000001'),
+  (UUID(), 'DevOps Mastery', 'Master the art of DevOps: CI/CD pipelines, container orchestration, and infrastructure as code.', 2342.30,
+   'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&q=80', 'Naresh IT', 1, 30, 'active',
+   '00000000-0000-0000-0000-000000000001'),
+  (UUID(), 'Kubernetes in Production', 'Battle-tested patterns for running Kubernetes at scale in enterprise environments.', 1899.00,
+   'https://images.unsplash.com/photo-1629654291663-b91ad427698f?w=400&q=80', 'Sarah Chen', 1, 75, 'active',
+   '00000000-0000-0000-0000-000000000001');
