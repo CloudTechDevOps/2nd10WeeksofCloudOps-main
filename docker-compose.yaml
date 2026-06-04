@@ -24,8 +24,12 @@ services:
       DB_HOST: mysql
       DB_USERNAME: admin
       DB_PASSWORD: Devops123
-      DB_NAME: test
       DB_PORT: 3306
+      DB_NAME: book-app
+      PORT: 80
+      NODE_ENV: development
+      JWT_SECRET: sdfghjkldfcgvhjnk
+      JWT_EXPIRES_IN: 7d
     networks:
       - appnet
     depends_on:
@@ -39,7 +43,7 @@ services:
     container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: Cloud122
-      MYSQL_DATABASE: test
+      MYSQL_DATABASE: booksapp
       MYSQL_USER: admin
       MYSQL_PASSWORD: Devops123
     ports:
