@@ -2,6 +2,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 
 const BASE = '/api';
+const SOCKET_BASE = '';
 
 export const api = axios.create({
   baseURL: BASE,
@@ -51,7 +52,7 @@ export const authApi = {
   me: () => api.get('/auth/me'),
 };
 
-export const socket = io({
+export const socket = io(SOCKET_BASE, {
   path: '/socket.io',
   autoConnect: false,
   transports: ['websocket', 'polling'],

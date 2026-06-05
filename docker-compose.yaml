@@ -22,11 +22,11 @@ services:
       - "84:80"
     environment:
       DB_HOST: mysql
-      DB_USERNAME: admin
+      DB_USER: admin
       DB_PASSWORD: Devops123
-      DB_PORT: 3306
-      DB_NAME: book-app
-      PORT: 80
+      PORT: 3306
+      DB_NAME: booksapp
+      APP_PORT: 80
       NODE_ENV: development
       JWT_SECRET: sdfghjkldfcgvhjnk
       JWT_EXPIRES_IN: 7d

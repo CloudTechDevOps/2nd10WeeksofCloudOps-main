@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: db-config
 data:
-  DB_PORT: "3306"            # Port for PostgreSQL
-  DB_NAME: "test" 
-  PORT: 80
+  DB_NAME: "booksapp"
+  PORT: "3306"
+  APP_PORT: "80"
   NODE_ENV: "development"
   JWT_SECRET: "sdfghjkldfcgvhjnk"
   JWT_EXPIRES_IN: "7d"
