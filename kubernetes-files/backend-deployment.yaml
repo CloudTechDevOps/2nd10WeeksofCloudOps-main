@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: us-central1-docker.pkg.dev/playground-s-11-ec8db565/fullstack/backend:503bd16bcbe74903725d15763d4140569059732c
+        image: 812949397331.dkr.ecr.us-east-1.amazonaws.com/backend:4
         ports:
         - containerPort: 80
         env:
