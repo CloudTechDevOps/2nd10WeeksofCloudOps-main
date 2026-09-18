@@ -1,48 +1,48 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql-deployment
-  labels:
-    app: mysql
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-        - name: mysql-container
-          image: mysql:8.0
-          args:
-            - --default-authentication-plugin=mysql_native_password
-          ports:
-            - containerPort: 3306
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: root
-            - name: MYSQL_DATABASE
-              value: booksapp
-          volumeMounts:
-            - name: mysql-initdb
-              mountPath: /docker-entrypoint-initdb.d
-      volumes:
-        - name: mysql-initdb
-          configMap:
-            name: mysql-init-script
----
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-service
-spec:
-  selector:
-    app: mysql
-  ports:
-    - port: 3306
-      targetPort: 3306
-  type: ClusterIP
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysql-deployment
+#   labels:
+#     app: mysql
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mysql
+#   template:
+#     metadata:
+#       labels:
+#         app: mysql
+#     spec:
+#       containers:
+#         - name: mysql-container
+#           image: mysql:8.0
+#           args:
+#             - --default-authentication-plugin=mysql_native_password
+#           ports:
+#             - containerPort: 3306
+#           env:
+#             - name: MYSQL_ROOT_PASSWORD
+#               value: root
+#             - name: MYSQL_DATABASE
+#               value: booksapp
+#           volumeMounts:
+#             - name: mysql-initdb
+#               mountPath: /docker-entrypoint-initdb.d
+#       volumes:
+#         - name: mysql-initdb
+#           configMap:
+#             name: mysql-init-script
+# ---
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql-service
+# spec:
+#   selector:
+#     app: mysql
+#   ports:
+#     - port: 3306
+#       targetPort: 3306
+#   type: ClusterIP
